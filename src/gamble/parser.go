@@ -6,11 +6,11 @@ package gamble
 import "C"
 
 import (
-	"unsafe"
 	"errors"
+	"unsafe"
 )
 
-type Node interface {}
+type Node interface{}
 
 func Parse(input string) (result Node, err error) {
 	c_input := (*C.uchar)(unsafe.Pointer(C.CString(input)))
@@ -50,7 +50,7 @@ func getNode(p *C.yaml_parser_t, stopEvent C.yaml_event_type_t) Node {
 			if item != nil {
 				sequenceNode = append(sequenceNode, item)
 			} else {
-				break;
+				break
 			}
 		}
 		return sequenceNode
@@ -62,7 +62,7 @@ func getNode(p *C.yaml_parser_t, stopEvent C.yaml_event_type_t) Node {
 				value := getNode(p, C.YAML_MAPPING_END_EVENT)
 				mappingNode[key.(string)] = value
 			} else {
-				break;
+				break
 			}
 		}
 		return mappingNode

@@ -1,8 +1,8 @@
 package gamble
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 var stringDocument = `
@@ -24,7 +24,7 @@ var sequenceDocument = `
 func TestParseSequences(t *testing.T) {
 	node, err := Parse(sequenceDocument)
 	assert.NoError(t, err)
-	assert.Equal(t, node, []interface{} {
+	assert.Equal(t, node, []interface{}{
 		"foo",
 		"bar",
 		"baz",
@@ -39,7 +39,7 @@ key2: value2
 func TestParsesSingleMap(t *testing.T) {
 	node, err := Parse(mapDocument)
 	assert.NoError(t, err)
-	assert.Equal(t, node, map[string]interface{} {
+	assert.Equal(t, node, map[string]interface{}{
 		"key1": "value1",
 		"key2": "value2",
 	})
@@ -68,15 +68,15 @@ func TestParseNestedMap(t *testing.T) {
 	node, err := Parse(nestedMapDocument)
 	assert.NoError(t, err)
 	assert.Equal(t, node, map[string]interface{}{
-		"globals": []interface{} {
+		"globals": []interface{}{
 			"taco",
 			"burrito",
 			"kimchi",
 		},
-		"collections":[]interface{} {
-			map[string]interface{} {
+		"collections": []interface{}{
+			map[string]interface{}{
 				"name": "oceans",
-				"locals": map[string]interface{} {
+				"locals": map[string]interface{}{
 					"foo": "bar",
 					"bar": "baz",
 				},
@@ -86,9 +86,9 @@ func TestParseNestedMap(t *testing.T) {
 					"three",
 				},
 			},
-			map[string]interface{} {
+			map[string]interface{}{
 				"name": "seas",
-				"age": "55",
+				"age":  "55",
 			},
 		},
 	})
