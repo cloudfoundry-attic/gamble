@@ -7,7 +7,7 @@ Usage:
 package main
 
 import (
-    "github.com/cloudfoundry/gamble"
+	"github.com/cloudfoundry/gamble"
 )
 
 var myYAML = `
@@ -18,12 +18,13 @@ some_key:
 `
 
 func main() {
-  document := gamble.Parse(myYAML)
-  println(document == map[string]interface{}{
-    "some_key": []interface{}{
-      "some",
-      "items",
-    }
-  }
+	document := gamble.Parse(myYAML)
+	println(document == map[string]interface{}{
+		"some_key": []interface{}{
+			"some",
+			"items",
+		},
+	})
 }
+
 ```
