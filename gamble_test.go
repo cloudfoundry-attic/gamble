@@ -1,6 +1,7 @@
-package gamble
+package gamble_test
 
 import (
+	. "github.com/cloudfoundry/gamble"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
