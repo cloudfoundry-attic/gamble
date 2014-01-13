@@ -35,7 +35,7 @@ func getNode(p *C.yaml_parser_t, stopEvent C.yaml_event_type_t) Node {
 		panic(errors.New("Error parsing YAML."))
 	}
 
-	eventType := C.yaml_event_get_type(&event)
+	eventType := event._type
 	if eventType == stopEvent {
 		return nil
 	}
