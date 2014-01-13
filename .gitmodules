@@ -1,6 +1,0 @@
-[submodule "src/github.com/stretchr/testify"]
-	path = src/github.com/stretchr/testify
-	url = https://github.com/stretchr/testify.git
-[submodule "src/github.com/yaml/libyaml"]
-	path = src/github.com/yaml/libyaml
-	url = https://github.com/yaml/libyaml.git

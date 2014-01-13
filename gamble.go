@@ -1,8 +1,7 @@
 package gamble
 
-// #cgo LDFLAGS: -lyaml
-// #include <yaml.h>
-// #include "yaml_extensions.h"
+// #include "./yaml.h"
+// #include "./yaml_extensions.h"
 import "C"
 
 import (
