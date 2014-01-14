@@ -1,6 +1,9 @@
 Gamble (libyaml for GO)
 ===============================
 
+Making the world better, one YAML parser at a time
+--------------------------------------------------
+
 Usage:
 
 ```go
