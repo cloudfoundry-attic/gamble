@@ -124,6 +124,22 @@ collections:
 		})
 	})
 
+	Context("parsing nulls", func() {
+		It("returns nils", func() {
+			node, err = Parse("some_key: null")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(node).To(Equal(map[string]interface{}{ "some_key": nil }))
+		})
+
+		It("parses the string 'null' correctly when quoted", func() {
+			node, err = Parse("some_key: \"null\"")
+			Expect(node).To(Equal(map[string]interface{}{ "some_key": "null" }))
+
+			node, err = Parse("some_key: 'null'")
+			Expect(node).To(Equal(map[string]interface{}{ "some_key": "null" }))
+		})
+	})
+
 	Context("parsing an invalid document", func() {
 		BeforeEach(func() {
 			node, err = Parse(`
