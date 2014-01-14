@@ -1,5 +1,3 @@
-
-#include "yaml_version.h"
 #include "yaml_private.h"
 
 /*
@@ -64,7 +62,7 @@ yaml_strdup(const yaml_char_t *str)
     if (!str)
         return NULL;
 
-    return (yaml_char_t *)strdup((char *)str);
+    return (yaml_char_t *)strcpy(malloc(strlen(str) + 1),str);
 }
 
 /*
