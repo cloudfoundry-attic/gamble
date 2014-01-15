@@ -10,6 +10,7 @@ Usage:
 package main
 
 import (
+  "fmt"
 	"github.com/cloudfoundry/gamble"
 )
 
@@ -21,13 +22,21 @@ some_key:
 `
 
 func main() {
-	document := gamble.Parse(myYAML)
-	println(document == map[string]interface{}{
-		"some_key": []interface{}{
-			"some",
-			"items",
-		},
-	})
+	document, err := gamble.Parse(myYAML)
+	if err != nil {
+	  println("Could not parse yaml")
+	  return
+	}
+
+  fmt.Printf("%#v\n", document)
+  // prints out a map from string to interface
+  // eg:
+	//    map[string]interface{}{
+	//    	"some_key": []interface{}{
+	//    		"some",
+	//    		"items",
+	//    	},
+	//    }
 }
 
 ```
