@@ -13,7 +13,7 @@ var _ = Describe("Gamble", func() {
 		err error
 	)
 
-	Context("parsing a single should value", func() {
+	Describe("parsing a single should value", func() {
 		BeforeEach(func() {
 			document = "the_string"
 			node, err = Parse(document)
@@ -28,7 +28,7 @@ var _ = Describe("Gamble", func() {
 		})
 	})
 
-	Context("parsing a sequence of strings", func() {
+	Describe("parsing a sequence of strings", func() {
 		BeforeEach(func() {
 			document = `
 - foo
@@ -47,7 +47,7 @@ var _ = Describe("Gamble", func() {
 		})
 	})
 
-	Context("parsing a map of string to strings", func() {
+	Describe("parsing a map of string to strings", func() {
 		BeforeEach(func() {
 			document = `
 key1: value1
@@ -68,7 +68,7 @@ key2: value2
 		})
 	})
 
-	Context("parsing a nested map", func() {
+	Describe("parsing a nested map", func() {
 		BeforeEach(func() {
 			document = `
 ---
@@ -124,7 +124,7 @@ collections:
 		})
 	})
 
-	Context("parsing nulls", func() {
+	Describe("parsing nulls", func() {
 		It("returns nils", func() {
 			node, err = Parse("some_key: null")
 			Expect(err).NotTo(HaveOccurred())
@@ -140,7 +140,15 @@ collections:
 		})
 	})
 
-	Context("parsing an invalid document", func() {
+	Describe("parsing empty values in a map", func() {
+		It("returns nil", func() {
+			node, err = Parse("some_key:")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(node).To(Equal(map[string]interface{}{ "some_key": nil }))
+		})
+	})
+
+	Describe("parsing an invalid document", func() {
 		BeforeEach(func() {
 			node, err = Parse(`
 ---

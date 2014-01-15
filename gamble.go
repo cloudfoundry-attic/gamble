@@ -43,11 +43,11 @@ func getNode(p *C.yaml_parser_t, stopEvent C.yaml_event_type_t) Node {
 		switch eventType {
 		case C.YAML_SCALAR_EVENT:
 			str := C.GoString(C.yaml_event_get_scalar_value(&event))
-			if str == "null" && C.yaml_event_get_scalar_style(&event) == C.YAML_PLAIN_SCALAR_STYLE {
+			isPlainScalar := C.yaml_event_get_scalar_style(&event) == C.YAML_PLAIN_SCALAR_STYLE
+			if isPlainScalar && (str == "null" || str == "") {
 				return nil
-			} else {
-				return str
 			}
+			return str
 		case C.YAML_SEQUENCE_START_EVENT:
 			sequenceNode := make([]interface{}, 0)
 			for {
