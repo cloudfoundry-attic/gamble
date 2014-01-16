@@ -522,8 +522,7 @@ yaml_stream_end_event_initialize(yaml_event_t *event);
 
 YAML_DECLARE(int)
 yaml_document_start_event_initialize(yaml_event_t *event,
-        yaml_version_directive_t *version_directive,
-        yaml_tag_directive_t *tag_directives_start,
+        yaml_version_directive_t *version_directiv *tag_directives_start,
         yaml_tag_directive_t *tag_directives_end,
         int implicit);
 

@@ -6,17 +6,14 @@ import "C"
 
 import (
 	"errors"
-	"unsafe"
 )
 
 type Node interface{}
 
 func Parse(input string) (result Node, err error) {
-	c_input := (*C.uchar)(unsafe.Pointer(C.CString(input)))
-	length := (C.size_t)(len(input))
 	var parser C.yaml_parser_t
 	C.yaml_parser_initialize(&parser)
-	C.yaml_parser_set_input_string(&parser, c_input, length)
+	C.yaml_parser_set_input_string(&parser, (*C.uchar)(yamlString(input)), yamlStringLength(input))
 
 	defer func() {
 		if e, ok := recover().(error); ok {
