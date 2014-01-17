@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Gamble", func() {
+var _ = Describe("parsing", func() {
 	var (
 		document string
 		node Node
