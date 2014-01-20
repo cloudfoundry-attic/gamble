@@ -1,12 +1,16 @@
 package gamble
 
-// #include "./yaml.h"
-// #include "./yaml_extensions.h"
+/*
+#include "./yaml.h"
+#include "./yaml_extensions.h"
+extern int writeHandler(void *data, unsigned char *buffer, size_t size);
+*/
 import "C"
 
 import (
 	"fmt"
 	"unsafe"
+	"bytes"
 	"strconv"
 )
 
@@ -31,22 +35,20 @@ func Marshal(input interface{}) (result string, err error) {
 	}()
 
 	var emitter C.yaml_emitter_t
-	var output_length C.size_t
-	var output_capacity = C.size_t(10000)
-	var output *C.uchar = (*C.uchar)(C.malloc(output_capacity))
-	C.memset(unsafe.Pointer(output), 0, output_capacity);
 
 	C.yaml_emitter_initialize(&emitter);
 	C.yaml_emitter_set_unicode(&emitter, 1);
 	C.yaml_emitter_set_indent(&emitter, 2);
-	C.yaml_emitter_set_output_string(&emitter, output, output_capacity, &output_length)
+
+	var buffer bytes.Buffer
+	C.yaml_emitter_set_output(&emitter, (*[0]byte)(C.writeHandler), unsafe.Pointer(&buffer))
 
 	startMarshaling(&emitter)
 	marshalNode(&emitter, input)
 	stopMarshaling(&emitter)
 
 	C.yaml_emitter_delete(&emitter);
-	result = C.GoStringN((*C.char)(unsafe.Pointer(output)), C.int(output_length))
+	result = buffer.String()
 	return
 }
 
@@ -176,4 +178,12 @@ func emit(e *C.yaml_emitter_t, event *C.yaml_event_t) {
 	if code != C.int(1) {
 		panic(fmt.Sprintf("YAML error emitting %s", C.GoString(e.problem)))
 	}
+}
+
+//export writeHandler
+func writeHandler(data unsafe.Pointer, buffer *C.uchar, size C.size_t) C.int {
+	writer := *((*bytes.Buffer)(data))
+	str := C.GoStringN((*C.char)(unsafe.Pointer(buffer)), C.int(size))
+	writer.Write(([]byte)(str))
+	return C.int(1)
 }
