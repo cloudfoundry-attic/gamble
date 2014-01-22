@@ -164,3 +164,114 @@ collections:
 		})
 	})
 })
+
+type MyStruct struct {
+	Age int
+	Name string
+	Address Address
+}
+
+type Address struct {
+	Street1 string
+}
+
+var _ = Describe("unmarshaling into a struct", func() {
+	It("populates the fields of a struct", func() {
+		document :=
+`
+---
+age: 54
+name: john
+`
+		var result MyStruct
+		err := Unmarshal(document, &result)
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(result.Age).To(Equal(54))
+		Expect(result.Name).To(Equal("john"))
+	})
+
+	It("populates nested structs", func() {
+		document :=
+`
+---
+age: 54
+name: john
+address:
+  street1: 123 Fake St
+`
+		var result MyStruct
+		err := Unmarshal(document, &result)
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(result.Address.Street1).To(Equal("123 Fake St"))
+	})
+
+	It("populates slices", func() {
+		type structWithSlice struct {
+			Things []string
+		}
+
+		document :=
+`
+---
+things:
+- thing1
+- thing2
+`
+
+		var result structWithSlice
+		err := Unmarshal(document, &result)
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(result.Things).To(Equal([]string{ "thing1", "thing2" }))
+	})
+
+	It("populates maps with string keys", func() {
+		var myMap map[string]int
+		document :=
+`
+---
+thing1: 5
+thing2: 6
+`
+
+		err := Unmarshal(document, &myMap)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(myMap).To(Equal(map[string]int {
+			"thing1": 5,
+			"thing2": 6,
+		}))
+	})
+
+	It("populates slices of structs", func() {
+		type thing struct {
+			Name string
+			Age int
+		}
+
+		type structWithSlice struct {
+			Things []thing
+		}
+
+		document :=
+`
+---
+things:
+- name: thing1
+  age: 12
+- name: thing2
+  age: 54
+`
+
+		var result structWithSlice
+		err := Unmarshal(document, &result)
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(result.Things).To(Equal([]thing{
+			thing{ Name: "thing1", Age: 12 },
+			thing{ Name: "thing2", Age: 54 },
+	    }))
+	})
+})
+

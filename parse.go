@@ -6,9 +6,60 @@ import "C"
 
 import (
 	"errors"
+	"reflect"
+	"strings"
+	"strconv"
 )
 
 type Node interface{}
+
+func Unmarshal(doc string, result interface{}) error {
+	parsedDoc, err := Parse(doc)
+	reflectValue := reflect.ValueOf(result).Elem()
+	err = unmarshal(parsedDoc, reflectValue)
+	return err
+}
+
+func unmarshal(value interface{}, result reflect.Value) error {
+	fieldType := result.Type().Kind()
+	switch fieldType {
+	case reflect.Int:
+		valueInt, _ := strconv.Atoi(value.(string))
+		result.SetInt(int64(valueInt))
+	case reflect.String:
+		result.SetString(value.(string))
+	case reflect.Struct:
+		resultType := result.Type()
+		nFields := resultType.NumField()
+		for i := 0; i < nFields; i++ {
+			structField := resultType.Field(i)
+			field := result.Field(i)
+			for key, nestedValue := range value.(map[string]interface{}) {
+				if strings.ToLower(structField.Name) == key {
+					unmarshal(nestedValue, field)
+				}
+			}
+		}
+	case reflect.Map:
+		valueType := result.Type().Elem()
+		newMap := reflect.MakeMap(result.Type())
+		for key, nestedValue := range value.(map[string]interface{}) {
+			newEntry := reflect.New(valueType)
+			unmarshal(nestedValue, newEntry)
+			newMap.SetMapIndex(reflect.ValueOf(key), newEntry.Elem())
+		}
+		result.Set(newMap)
+	case reflect.Slice:
+		valueSlice := value.([]interface{})
+		newSlice := reflect.MakeSlice(result.Type(), len(valueSlice), len(valueSlice))
+		for i, entry := range valueSlice {
+			unmarshal(entry, newSlice.Index(i))
+		}
+		result.Set(newSlice)
+	}
+
+	return nil
+}
 
 func Parse(input string) (result Node, err error) {
 	var parser C.yaml_parser_t
