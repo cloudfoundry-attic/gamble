@@ -2,7 +2,6 @@ package gamble
 
 /*
 #include "./yaml.h"
-#include "./yaml_extensions.h"
 extern int writeHandler(void *data, unsigned char *buffer, size_t size);
 */
 import "C"

@@ -1,7 +1,6 @@
 package gamble
 
 // #include "./yaml.h"
-// #include "./yaml_extensions.h"
 import "C"
 
 import (
