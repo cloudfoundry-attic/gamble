@@ -7,10 +7,10 @@ extern int writeHandler(void *data, unsigned char *buffer, size_t size);
 import "C"
 
 import (
-	"fmt"
-	"unsafe"
 	"bytes"
+	"fmt"
 	"strconv"
+	"unsafe"
 )
 
 type MarshalError struct {
@@ -35,9 +35,9 @@ func Marshal(input interface{}) (result string, err error) {
 
 	var emitter C.yaml_emitter_t
 
-	C.yaml_emitter_initialize(&emitter);
-	C.yaml_emitter_set_unicode(&emitter, 1);
-	C.yaml_emitter_set_indent(&emitter, 2);
+	C.yaml_emitter_initialize(&emitter)
+	C.yaml_emitter_set_unicode(&emitter, 1)
+	C.yaml_emitter_set_indent(&emitter, 2)
 
 	var buffer bytes.Buffer
 	C.yaml_emitter_set_output(&emitter, (*[0]byte)(C.writeHandler), unsafe.Pointer(&buffer))
@@ -46,7 +46,7 @@ func Marshal(input interface{}) (result string, err error) {
 	marshalNode(&emitter, input)
 	stopMarshaling(&emitter)
 
-	C.yaml_emitter_delete(&emitter);
+	C.yaml_emitter_delete(&emitter)
 	result = buffer.String()
 	return
 }
@@ -160,7 +160,7 @@ func startMarshaling(e *C.yaml_emitter_t) {
 
 func stopMarshaling(e *C.yaml_emitter_t) {
 	var event C.yaml_event_t
-	C.yaml_document_end_event_initialize(&event, 0);
+	C.yaml_document_end_event_initialize(&event, 0)
 	emit(e, &event)
 
 	C.yaml_stream_end_event_initialize(&event)

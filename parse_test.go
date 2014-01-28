@@ -9,8 +9,8 @@ import (
 var _ = Describe("parsing", func() {
 	var (
 		document string
-		node Node
-		err error
+		node     Node
+		err      error
 	)
 
 	Describe("parsing a single should value", func() {
@@ -128,15 +128,15 @@ collections:
 		It("returns nils", func() {
 			node, err = Parse("some_key: null")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(node).To(Equal(map[string]interface{}{ "some_key": nil }))
+			Expect(node).To(Equal(map[string]interface{}{"some_key": nil}))
 		})
 
 		It("parses the string 'null' correctly when quoted", func() {
 			node, err = Parse("some_key: \"null\"")
-			Expect(node).To(Equal(map[string]interface{}{ "some_key": "null" }))
+			Expect(node).To(Equal(map[string]interface{}{"some_key": "null"}))
 
 			node, err = Parse("some_key: 'null'")
-			Expect(node).To(Equal(map[string]interface{}{ "some_key": "null" }))
+			Expect(node).To(Equal(map[string]interface{}{"some_key": "null"}))
 		})
 	})
 
@@ -144,7 +144,7 @@ collections:
 		It("returns nil", func() {
 			node, err = Parse("some_key:")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(node).To(Equal(map[string]interface{}{ "some_key": nil }))
+			Expect(node).To(Equal(map[string]interface{}{"some_key": nil}))
 		})
 	})
 

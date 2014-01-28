@@ -10,7 +10,7 @@ var _ = Describe("marshaling", func() {
 	It("marshals strings", func() {
 		document, err := Marshal("some-string")
 		Expect(document).To(Equal(
-`--- some-string
+			`--- some-string
 ...
 `,
 		))
@@ -26,7 +26,7 @@ var _ = Describe("marshaling", func() {
 		}
 		document, err := Marshal(map1)
 		Expect(document).To(Equal(
-`---
+			`---
 key1: 5
 key2: 10.00
 key3: cool
@@ -48,7 +48,7 @@ key4: null
 		document, err := Marshal(map1)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(document).To(Equal(
-`---
+			`---
 key1:
   - my-string
   - 5.00
