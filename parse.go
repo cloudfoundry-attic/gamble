@@ -33,7 +33,7 @@ func getNode(p *C.yaml_parser_t, stopEvent C.yaml_event_type_t) Node {
 		}
 
 		eventType := event._type
-		if eventType == stopEvent {
+		if eventType == stopEvent || eventType == 0 {
 			return nil
 		}
 

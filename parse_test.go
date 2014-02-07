@@ -13,6 +13,12 @@ var _ = Describe("parsing", func() {
 		err      error
 	)
 
+	It("returns nil, given an empty string", func() {
+		node, err := Parse("")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(node).To(BeNil())
+	})
+
 	Describe("parsing a single should value", func() {
 		BeforeEach(func() {
 			document = "the_string"
